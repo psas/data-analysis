@@ -1,0 +1,127 @@
+0x0021	FC_REQUEST_STATE	fc_exports	enum EvaluatePowerupState InitializeState IdleState PreflightCheckState ReadyState ArmingState ArmedState RocketReadyState LaunchAbortState BoostState CoastState DeployDrogueState DescendDrogueState DeployMainState DescendMainState RecoveryWaitState RecoverySleepState PowerDownState LawnDartState LaunchAbortedState
+0x0040	FC_ABORT_LAUNCH	fc_exports
+0x0121	FC_REPORT_STATE	fc_exports	enum EvaluatePowerupState InitializeState IdleState PreflightCheckState ReadyState ArmingState ArmedState RocketReadyState LaunchAbortState BoostState CoastState DeployDrogueState DescendDrogueState DeployMainState DescendMainState RecoveryWaitState RecoverySleepState PowerDownState LawnDartState LaunchAbortedState
+0x0168	FC_REPORT_NODE_STATUS	fc_exports	B*
+0x0184	FC_REPORT_LINK_QUALITY	fc_exports	nn
+0x01a8	FC_REPORT_IMPORTANCE_MASK	fc_exports	B*
+0x01c8	FC_PING_MESSAGE	fc_exports
+0x01e4	FC_REPORT_LOG_AVAIL	fc_exports	N
+0x0221	FC_FORCE_STATE	fc_exports	enum EvaluatePowerupState InitializeState IdleState PreflightCheckState ReadyState ArmingState ArmedState RocketReadyState LaunchAbortState BoostState CoastState DeployDrogueState DescendDrogueState DeployMainState DescendMainState RecoveryWaitState RecoverySleepState PowerDownState LawnDartState LaunchAbortedState
+0x0802	REC_SET_PYRO	recovery/recovery_exports
+0x0841	REC_SET_MODE	recovery/recovery_exports	enum REC_MODE_SAFE REC_MODE_ARMED_2M REC_MODE_ABORT REC_MODE_ARMED
+0x0861	REC_NODE_COMMAND	recovery/recovery_exports
+0x0902	REC_REPORT_PYRO	recovery/recovery_exports
+0x0923	REC_REPORT_TIMER	recovery/recovery_exports	n
+0x0941	REC_REPORT_MODE	recovery/recovery_exports	enum REC_MODE_SAFE REC_MODE_ARMED_2M REC_MODE_ABORT REC_MODE_ARMED
+0x0983	REC_REPORT_ERROR	recovery/recovery_exports
+0x09a3	REC_REPORT_DTMF	recovery/recovery_exports
+0x09c6	REC_REPORT_BATTERY	recovery/recovery_exports	CnnC
+0x09e2	REC_REPORT_HVSUPP	recovery/recovery_exports	n
+0x0a23	REC_SET_TIMER	recovery/recovery_exports	n
+0x0b50	REC_GET_MODE	recovery/recovery_exports
+0x0bd0	REC_GET_BATTERY	recovery/recovery_exports
+0x0bf2	REC_GET_HVSUPP	recovery/recovery_exports
+0x1001	LTR_RESET_NODE	ltr/ltr_exports
+0x1021	LTR_SET_ERROR	ltr/ltr_exports
+0x1061	LTR_SET_MODE	ltr/ltr_exports	enum LTR_MODE_SAFE LTR_MODE_ARMED
+0x1083	LTR_SET_IGNITION	ltr/ltr_exports
+0x10a1	LTR_SET_SIREN	ltr/ltr_exports
+0x10c1	LTR_SET_STROBE	ltr/ltr_exports
+0x10e1	LTR_SET_SPOWER	ltr/ltr_exports
+0x1124	LTR_REPORT_ERROR	ltr/ltr_exports
+0x1361	LTR_REPORT_MODE	ltr/ltr_exports	enum LTR_MODE_SAFE LTR_MODE_ARMED
+0x1370	LTR_GET_MODE	ltr/ltr_exports
+0x1383	LTR_REPORT_IGNITION	ltr/ltr_exports
+0x1390	LTR_GET_IGNITION	ltr/ltr_exports
+0x13a1	LTR_REPORT_SIREN	ltr/ltr_exports
+0x13b0	LTR_GET_SIREN	ltr/ltr_exports
+0x13c1	LTR_REPORT_STROBE	ltr/ltr_exports
+0x13d0	LTR_GET_STROBE	ltr/ltr_exports
+0x13e1	LTR_REPORT_SPOWER	ltr/ltr_exports
+0x13f0	LTR_GET_SPOWER	ltr/ltr_exports
+0x1801	IMU_NODE_COMMAND	imu/imu_exports
+0x1861	IMU_SET_MODE	imu/imu_exports	enum IMU_MODE_SAFE IMU_MODE_ARMED
+0x1923	IMU_REPORT_ERROR	imu/imu_exports
+0x1a41	IMU_SET_TEST	imu/imu_exports
+0x1a82	IMU_SET_ACCEL	imu/imu_exports	n
+0x1aa2	IMU_SET_GYRO	imu/imu_exports	n
+0x1b61	IMU_REPORT_MODE	imu/imu_exports	enum IMU_MODE_SAFE IMU_MODE_ARMED
+0x1b70	IMU_GET_MODE	imu/imu_exports
+0x1b88	IMU_ACCEL_DATA	imu/imu_exports	n*
+0x1ba6	IMU_GYRO_DATA	imu/imu_exports	n*
+0x2801	APS_SET_MODE	aps/aps_exports	enum APS_MODE_SLEEP APS_MODE_AWAKE APS_MODE_SAFE APS_MODE_ARMED
+0x2821	APS_RESET_NODE	aps/aps_exports
+0x2841	APS_SET_ERROR	aps/aps_exports
+0x2861	APS_SET_SWITCH_1	aps/aps_exports
+0x2881	APS_SET_SWITCH_2	aps/aps_exports
+0x28a1	APS_SET_SWITCH_3	aps/aps_exports
+0x28c1	APS_SET_SWITCH_4	aps/aps_exports
+0x2944	APS_REPORT_ERROR	aps/aps_exports
+0x2b01	APS_REPORT_MODE	aps/aps_exports	enum APS_MODE_SLEEP APS_MODE_AWAKE APS_MODE_SAFE APS_MODE_ARMED
+0x2b10	APS_GET_MODE	aps/aps_exports
+0x2b61	APS_REPORT_SWITCH_1	aps/aps_exports
+0x2b70	APS_GET_SWITCH_1	aps/aps_exports
+0x2b81	APS_REPORT_SWITCH_2	aps/aps_exports
+0x2b90	APS_GET_SWITCH_2	aps/aps_exports
+0x2ba1	APS_REPORT_SWITCH_3	aps/aps_exports
+0x2bb0	APS_GET_SWITCH_3	aps/aps_exports
+0x2bc1	APS_REPORT_SWITCH_4	aps/aps_exports
+0x2bd0	APS_GET_SWITCH_4	aps/aps_exports
+0x3241	UMB_SET_ROCKETREADY	aps/aps_exports
+0x3301	UMB_REPORT_CONNECTOR	aps/aps_exports
+0x3310	UMB_GET_CONNECTOR	aps/aps_exports
+0x3321	UMB_REPORT_SHORE_POWER	aps/aps_exports
+0x3330	UMB_GET_SHORE_POWER	aps/aps_exports
+0x3341	UMB_REPORT_ROCKETREADY	aps/aps_exports
+0x3350	UMB_GET_ROCKETREADY	aps/aps_exports
+0x3b02	APS_DATA_VOLTS	aps/aps_exports	n
+0x3b24	APS_DATA_AMPS	aps/aps_exports	N
+0x3b42	APS_DATA_CHARGE	aps/aps_exports	n
+0x3b61	PWR_REPORT_CHARGER	aps/aps_exports
+0x4801	GPS_SET_MODE	gps/gps_exports	enum GPS_MODE_SAFE GPS_MODE_ARMED
+0x4821	GPS_RESET_NODE	gps/gps_exports
+0x4841	GPS_SET_ERROR	gps/gps_exports
+0x4861	GPS_SET_POWER	gps/gps_exports
+0x4881	GPS_SET_PROTOCOL	gps/gps_exports
+0x48a1	GPS_SET_ROM	gps/gps_exports
+0x4944	GPS_REPORT_ERROR	gps/gps_exports
+0x4ac0	GPS_ENABLE_1HZ_MESSAGE	gps/gps_exports
+0x4ae0	GPS_ENABLE_10KHZ_MESSAGE	gps/gps_exports
+0x4b01	GPS_REPORT_MODE	gps/gps_exports	enum GPS_MODE_SAFE GPS_MODE_ARMED
+0x4b10	GPS_GET_MODE	gps/gps_exports
+0x4b61	GPS_REPORT_POWER	gps/gps_exports
+0x4b70	GPS_GET_POWER	gps/gps_exports
+0x4b81	GPS_REPORT_PROTOCOL	gps/gps_exports
+0x4b90	GPS_GET_PROTOCOL	gps/gps_exports
+0x4ba1	GPS_REPORT_ROM	gps/gps_exports
+0x4bb0	GPS_GET_ROM	gps/gps_exports
+0x4bc0	GPS_1HZ_MESSAGE	gps/gps_exports
+0x4be0	GPS_10KHZ_MESSAGE	gps/gps_exports
+0x6322	PRESS_REPORT_DATA	imu/imu_exports	n*
+0x6b22	TEMP_REPORT_DATA	imu/imu_exports	n*
+0x7001	ATV_SET_MODE	atv/atv_exports	enum ATV_MODE_SAFE ATV_MODE_ARMED
+0x7021	ATV_RESET_NODE	atv/atv_exports
+0x7041	ATV_SET_ERROR	atv/atv_exports
+0x7061	ATV_SET_POWER_CAMERA	atv/atv_exports
+0x7081	ATV_SET_POWER_OVERLAY	atv/atv_exports
+0x70a1	ATV_SET_POWER_TX	atv/atv_exports
+0x70c1	ATV_SET_POWER_PA	atv/atv_exports
+0x7144	ATV_REPORT_ERROR	atv/atv_exports
+0x7301	ATV_REPORT_MODE	atv/atv_exports	enum ATV_MODE_SAFE ATV_MODE_ARMED
+0x7310	ATV_GET_MODE	atv/atv_exports
+0x7361	ATV_REPORT_POWER_CAMERA	atv/atv_exports
+0x7370	ATV_GET_POWER_CAMERA	atv/atv_exports
+0x7381	ATV_REPORT_POWER_OVERLAY	atv/atv_exports
+0x7390	ATV_GET_POWER_OVERLAY	atv/atv_exports
+0x73a1	ATV_REPORT_POWER_TX	atv/atv_exports
+0x73b0	ATV_GET_POWER_TX	atv/atv_exports
+0x73c1	ATV_REPORT_POWER_PA	atv/atv_exports
+0x73d0	ATV_GET_POWER_PA	atv/atv_exports
+0xf004	FC_IMU_HEIGHT	fc_exports
+0xf028	FC_IMU_BASE	fc_exports	nnN
+0xf804	FC_GPS_NAVSOL	fc_exports	B*
+0xf827	FC_GPS_TIME	fc_exports	CCnCCC
+0xf848	FC_GPS_LATLON	fc_exports	NN
+0xf864	FC_GPS_HEIGHT	fc_exports	N
+0xf881	FC_GPS_SATS_VIS	fc_exports	C
+0xf8a1	FC_GPS_SATS_USED	fc_exports	C

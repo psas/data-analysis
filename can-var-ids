@@ -1,0 +1,12 @@
+0x0b30	REC_GET_TIMER	recovery/recovery_exports
+0x1b90	IMU_ENABLE_ACCEL	imu/imu_exports
+0x1bb0	IMU_ENABLE_GYRO	imu/imu_exports
+0x3b10	APS_ENABLE_VOLTS	aps/aps_exports
+0x3b30	APS_ENABLE_AMPS	aps/aps_exports
+0x3b50	APS_ENABLE_CHARGE	aps/aps_exports
+0x5300	GPS_UART_TRANSMIT	gps/gps_exports
+0x5310	GPS_ENABLE_UART_TRANSMIT	gps/gps_exports
+0x5320	GPS_UART_RECEIVE	gps/gps_exports
+0x6330	PRESS_ENABLE_DATA	imu/imu_exports
+0x6b30	TEMP_ENABLE_DATA	imu/imu_exports
+0x7b00	ATV_UART_RECIEVE	atv/atv_exports	A*

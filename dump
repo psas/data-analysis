@@ -1,0 +1,121 @@
+#!/usr/bin/perl
+
+use warnings;
+use strict;
+
+my %pattern;
+my %enum;
+my %consts;
+my $maxlen = 0;
+
+sub read_ids {
+	my ($fname) = @_;
+	my %map;
+	open IDS, $fname or die "$fname: $!";
+	while(<IDS>) {
+		chomp;
+		my @fields = split;
+		$maxlen = length($fields[1]) if length($fields[1]) > $maxlen;
+		$map{$fields[0]} = $fields[1];
+
+		next unless @fields > 3;
+		if($fields[3] eq "enum") {
+			my %values = map { hex($consts{$_}) => $_ } @fields[4..$#fields];
+			$enum{$fields[1]} = \%values;
+		} else {
+			$pattern{$fields[1]} = $fields[3];
+		}
+	}
+	close IDS;
+	return %map;
+}
+
+%consts = read_ids("can-consts");
+my %var = read_ids("can-var-ids");
+my %fix = read_ids("can-ids");
+my %gps = read_ids("gps-fmt");
+
+my $skip_gps_bytes = 0;
+sub find_gps {
+	my ($time, $data) = @_;
+	sub have {
+		my ($data, $len) = @_;
+		while(length($data) < $len) {
+			my $rec;
+			1 while defined($rec = <>) && 0x5300 != (0xfff0 & unpack("N", $rec));
+			return 0 unless $rec;
+			my ($id, $new) = unpack "Nx[N]a8", $rec;
+			$data .= substr $new, 0, $id & 0xf;
+		}
+		return $data;
+	}
+	return () unless $data = have($data, 10);
+	my ($pref, $type, $wc) = unpack("vvv", $data);
+	return () unless $pref == 0x81ff && unpack("%16v5", $data) == 0;
+	return () unless $data = have($data, 2 * (5 + $wc + 1));
+	$data = substr $data, 10, 2 * ($wc + 1);
+	return () unless unpack("%16v*", $data) == 0;
+	$skip_gps_bytes = 2 * (5 + $wc + 1);
+	my $name = $gps{$type} || "GPS_" . $type;
+	return ($name, unpack($pattern{$name} || "v*", $data));
+}
+
+sub print_packet {
+	my ($time, $name, @data) = @_;
+	printf("%11.2f %-${maxlen}s ", $time / 100.0, $name);
+	print join(" ", @data);
+	print "\n";
+}
+
+open(INPUT, ($ARGV[0] || "-")) or die "$!";
+
+$/ = \16;
+while(<INPUT>) {
+	die "early EOF" if length($_) < 16;
+	my ($id, $time, $data) = unpack "N2a8", $_;
+	$id &= 0xffff;
+	$data = $id & 0x10 ? "" : substr($data, 0, $id & 0xf);
+
+	my @gps_data;
+	if(($id & 0xfff0) == 0x5300) { # GPS_UART_TRANSMIT
+		if($skip_gps_bytes) {
+			$skip_gps_bytes -= $id & 0xf;
+			next if $skip_gps_bytes >= 0;
+			$data = substr $data, $skip_gps_bytes;
+			$skip_gps_bytes = 0;
+		}
+		for my $i (0 .. length($data) - 1) {
+			my $right = substr $data, $i;
+			my $filepos = tell INPUT;
+			@gps_data = find_gps($time, $right);
+			seek INPUT, $filepos, 0;
+			if(@gps_data) {
+				$skip_gps_bytes -= length($data) - $i;
+				$data = substr($data, 0, $i);
+				last;
+			}
+		}
+		unless(length($data)) {
+			print_packet($time, @gps_data);
+			next;
+		}
+	}
+
+	my $name = sprintf("0x%04x", $id);
+	my $varname = sprintf("0x%04x", $id & ~0xf);
+	$name = $fix{$name} || $var{$varname} || $name;
+	my @data;
+	if($id & 0x10 && $var{$varname}) {
+		@data = ($id & 0xf);
+	} elsif($enum{$name}) {
+		@data = unpack("C", $data);
+		@data = ($enum{$name}->{$data[0]} or $data[0]);
+	} elsif($pattern{$name}) {
+		@data = unpack($pattern{$name} . "C*", $data);
+	} else {
+		@data = map { sprintf "%02x", $_ } unpack("C*", $data);
+	}
+	print_packet($time, $name, @data);
+	print_packet($time, @gps_data) if @gps_data;
+}
+close INPUT;
