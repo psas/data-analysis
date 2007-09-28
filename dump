@@ -35,6 +35,14 @@ my %var = read_ids("can-var-ids");
 my %fix = read_ids("can-ids");
 my %gps = read_ids("gps-fmt");
 
+my %gps_wc = (
+	1000 => 49,
+	1003 => 45,
+	1009 => 16,
+	1011 => 53,
+	1102 => 247,
+);
+
 my $skip_gps_bytes = 0;
 sub find_gps {
 	my ($time, $data) = @_;
@@ -55,6 +63,8 @@ sub find_gps {
 	return () unless $data = have($data, 2 * (5 + $wc + 1));
 	$data = substr $data, 10, 2 * ($wc + 1);
 	return () unless unpack("%16v*", $data) == 0;
+	warn "GPS_$type: got $wc data words but expected $gps_wc{$type}"
+		if defined $gps_wc{$type} and $gps_wc{$type} != $wc;
 	$skip_gps_bytes = 2 * (5 + $wc + 1);
 	my $name = $gps{$type} || "GPS_" . $type;
 	return ($name, unpack($pattern{$name} || "v*", $data));
