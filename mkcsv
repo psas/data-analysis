@@ -1,0 +1,69 @@
+#!/usr/bin/perl -anl
+
+use warnings;
+use strict;
+
+BEGIN {
+	my %titles = (
+		"FC_REPORT_STATE"	=> [qw(state)],
+		"IMU_ACCEL_DATA"	=> [qw(acc_x acc_y acc_z acc_q)],
+		"IMU_GYRO_DATA"		=> [qw(pitch yaw roll)],
+		"PRESS_REPORT_DATA"	=> [qw(pressure)],
+		"TEMP_REPORT_DATA"	=> [qw(temperature)],
+		"GPS_1009"		=> [qw(
+			set_time sequence measurement_sequence
+			ecef_x ecef_y ecef_z
+			ecef_vel_x ecef_vel_y ecef_vel_z
+			)],
+		"GPS_1000"		=> [qw(
+			set_time sequence measurement_sequence
+			navsol_validity navsol_type measurements_used
+			polar_navigation
+			gps_week gps_epoch_seconds gps_epoch_nanos
+			utc_day utc_month utc_year
+			utc_hours utc_minutes utc_seconds utc_nanos
+			latitude longitude height
+			geoidal_separation ground_speed
+			true_course magnetic_variation climb_rate
+			map_datum
+			ehpe evpe ete ehve
+			clock_bias clock_bias_stddev
+			clock_drift clock_drift_stddev
+			)],
+	);
+	my @order = (
+		"FC_REPORT_STATE",
+		"IMU_ACCEL_DATA",
+		"IMU_GYRO_DATA",
+		"PRESS_REPORT_DATA",
+		"TEMP_REPORT_DATA",
+		"GPS_1009",
+		"GPS_1000",
+	);
+	my @titles = map { @{$titles{$_}} } @order;
+	my $next = 0;
+	%::col = map { my $cur = $next; $next += @{$titles{$_}}; $_ => $cur } @order;
+	$::width = @titles;
+	@::data = ("") x $::width;
+	print join(",", "time", @titles);
+}
+
+my ($time, $kind, @data) = @F;
+next unless defined $::col{$kind};
+
+$::time = $time unless defined $::time;
+$time = $::time if $time == 0;
+
+if($time ne $::time || $::have{$kind}) {
+	print join(",", $::time, @::data);
+	@::data = ("") x $::width;
+	%::have = ();
+	$::time = $time;
+}
+
+@::data[$::col{$kind} .. $::col{$kind} + $#data] = @data;
+$::have{$kind} = 1;
+
+END {
+	print join(",", $::time, @::data) if keys %::have;
+}
