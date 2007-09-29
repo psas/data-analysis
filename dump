@@ -4,6 +4,7 @@ use warnings;
 use strict;
 
 my %pattern;
+my %sign;
 my %enum;
 my %consts;
 my $maxlen = 0;
@@ -24,6 +25,7 @@ sub read_ids {
 			$enum{$fields[1]} = \%values;
 		} else {
 			$pattern{$fields[1]} = $fields[3];
+			$sign{$fields[1]} = $fields[4] if @fields > 4;
 		}
 	}
 	close IDS;
@@ -72,6 +74,8 @@ sub find_gps {
 
 sub print_packet {
 	my ($time, $name, @data) = @_;
+	@data = unpack($sign{$name}, pack(uc $sign{$name}, @data))
+		if defined $sign{$name};
 	printf("%11.2f %-${maxlen}s ", $time / 100.0, $name);
 	print join(" ", @data);
 	print "\n";
