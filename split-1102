@@ -1,0 +1,7 @@
+#!/usr/bin/perl -wanl
+
+$time = shift(@F);
+shift(@F);
+next if shift(@F) ne "GPS_1102";
+print join(" ", $time, splice(@F, 0, 13));
+print join(" ", $time, splice(@F, 0, 17)) for (1..12);
