@@ -3,11 +3,13 @@
 use warnings;
 use strict;
 
+my %source;
 my %pattern;
 my %sign;
 my %enum;
 my %consts;
 my $maxlen = 0;
+my $maxsource = 0;
 
 sub read_ids {
 	my ($fname) = @_;
@@ -18,6 +20,9 @@ sub read_ids {
 		my @fields = split;
 		$maxlen = length($fields[1]) if length($fields[1]) > $maxlen;
 		$map{$fields[0]} = $fields[1];
+
+		$maxsource = length($fields[2]) if length($fields[2]) > $maxsource;
+		$source{$fields[1]} = $fields[2];
 
 		next unless @fields > 3;
 		if($fields[3] eq "enum") {
@@ -74,9 +79,11 @@ sub find_gps {
 
 sub print_packet {
 	my ($time, $name, @data) = @_;
+	my $source = $source{$name};
+	$source = "fc" unless $time or $source eq "ground";
 	@data = unpack($sign{$name}, pack(uc $sign{$name}, @data))
 		if defined $sign{$name};
-	printf("%11.2f %-${maxlen}s ", $time / 100.0, $name);
+	printf("%11.2f %-${maxsource}s %-${maxlen}s ", $time / 100.0, $source, $name);
 	print join(" ", @data);
 	print "\n";
 }

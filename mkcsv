@@ -48,7 +48,7 @@ BEGIN {
 	print join(",", "time", @titles);
 }
 
-my ($time, $kind, @data) = @F;
+my ($time, $source, $kind, @data) = @F;
 next unless defined $::col{$kind};
 
 $::time = $time unless defined $::time;
