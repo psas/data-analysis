@@ -1,0 +1,32 @@
+#!/usr/bin/perl -nla
+
+sub word($$$) {
+	my ($sat, $index, $value) = @_;
+	return if $value == 0;
+
+	if($index == 0 || $index == 10 || $index == $n[$sat])
+	{
+		$n[$sat] = $index % 10;
+		$w[$sat][$index % 10] = $value & 0xFFFFFF;
+		if($n[$sat] == 9)
+		{
+			my $s = sprintf "%02d %d", $sat, ($w[$sat][1] >> 2) & 7;
+			for my $i (0..9)
+			{
+				$s .= sprintf " %06x", $w[$sat][$i];
+			}
+			print $s;
+		}
+		++$n[$sat];
+	}
+	else
+	{
+		undef $n[$sat];
+	}
+}
+
+if(scalar(@F) == 18)
+{
+	word($F[5], $F[1], $F[16]);
+	word($F[5], $F[1] + 1, $F[17]);
+}
